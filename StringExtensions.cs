@@ -16,6 +16,27 @@ namespace MagicCountryResolver
             }
 
             return isCandidate;
+        }
+
+        public static bool HasAnyLetters(this string word, string wordToCompareTo)
+        {
+            bool found = false;
+            foreach (char character in word)
+            {
+                if (found)
+                    continue;
+
+                foreach (char inputChar in wordToCompareTo)
+                {
+                    if (found)
+                        continue;
+
+                    if (inputChar == character)
+                        found = true;
+                }
+            }
+
+            return found;
         } 
     }
 }

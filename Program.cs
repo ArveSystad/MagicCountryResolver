@@ -19,10 +19,10 @@ namespace MagicCountryResolver
             }
             List<string> foundCountries;
 
-            if (args[1] == "none")
-                foundCountries = GetCountriesNotContainingAnyLetters(args[0]).ToList();
-            else if(args[1] == "all")
-                foundCountries = GetCountriesContainingAllLetters(args[0]).ToList();
+            if (args[0] == "none")
+                foundCountries = GetCountriesNotContainingAnyLetters(args[1]).ToList();
+            else if(args[0] == "all")
+                foundCountries = GetCountriesContainingAllLetters(args[1]).ToList();
             else 
                 throw new Exception("No mode given, give me one!");
 
@@ -50,26 +50,12 @@ namespace MagicCountryResolver
         {
             var input = inThisWord.ToLower();
             foreach (string country in _countries)
-            {
-                bool found = false;
+            {               
                 var countryToLower = country.ToLower();
 
-                foreach (char character in countryToLower)
-                {
-                    if (found)
-                        continue;
+                var hasAnyLetters = countryToLower.HasAnyLetters(inThisWord);
 
-                    foreach (char inputChar in input)
-                    {
-                        if (found)
-                            continue;
-
-                        if (inputChar == character)
-                            found = true;
-                    }
-                }
-
-                if (!found)
+                if (!hasAnyLetters)
                     yield return country;
             }
         }
