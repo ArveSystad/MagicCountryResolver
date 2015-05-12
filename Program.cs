@@ -20,7 +20,7 @@ namespace MagicCountryResolver
 
             var input = args[0].ToLower();
 
-            var foundCountries = GetCountriesNotContainingAnyLetters(_countries, input).ToList();
+            var foundCountries = GetCountriesNotContainingAnyLetters(input).ToList();
 
             foreach(var country in foundCountries)
                 Console.WriteLine(country);
@@ -30,9 +30,9 @@ namespace MagicCountryResolver
             Console.WriteLine("A total of {0} countries.", foundCountries.Count());
         }
 
-        private static IEnumerable<string> GetCountriesNotContainingAnyLetters(string[] countries, string inThisWord)
+        private static IEnumerable<string> GetCountriesNotContainingAnyLetters(string inThisWord)
         {
-            foreach (string country in countries)
+            foreach (string country in _countries)
             {
                 bool found = false;
                 var countryToLower = country.ToLower();
