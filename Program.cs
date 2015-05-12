@@ -13,16 +13,20 @@ namespace MagicCountryResolver
         static void Main(string[] args)
         {
             _countries = File.ReadAllLines("../countries.txt");
-            if(args.Length < 1 ) { 
-                Console.WriteLine("Give me a word, damnit!");
+            if(args.Length < 2 ) { 
+                Console.WriteLine("Give me a word and a mode ('none' or 'all')!");
                 Environment.Exit(0);
             }
+            List<string> foundCountries;
 
-            var input = args[0].ToLower();
+            if (args[1] == "none")
+                foundCountries = GetCountriesNotContainingAnyLetters(args[0]).ToList();
+            else if(args[1] == "all")
+                foundCountries = GetCountriesContainingAllLetters(args[0]).ToList();
+            else 
+                throw new Exception("No mode given, give me one!");
 
-            var foundCountries = GetCountriesNotContainingAnyLetters(input).ToList();
-
-            foreach(var country in foundCountries)
+            foreach (var country in foundCountries)
                 Console.WriteLine(country);
 
             Console.WriteLine();
@@ -30,8 +34,21 @@ namespace MagicCountryResolver
             Console.WriteLine("A total of {0} countries.", foundCountries.Count());
         }
 
+        private static IEnumerable<string> GetCountriesContainingAllLetters(string inThisWord)
+        {
+            var input = inThisWord.ToLower();
+            foreach (string country in _countries)
+            {
+                var countryToLower = country.ToLower();
+
+                if (countryToLower.HasAllLetters(input))
+                    yield return country;
+            }
+        }
+        
         private static IEnumerable<string> GetCountriesNotContainingAnyLetters(string inThisWord)
         {
+            var input = inThisWord.ToLower();
             foreach (string country in _countries)
             {
                 bool found = false;
@@ -42,7 +59,7 @@ namespace MagicCountryResolver
                     if (found)
                         continue;
 
-                    foreach (char inputChar in inThisWord)
+                    foreach (char inputChar in input)
                     {
                         if (found)
                             continue;
