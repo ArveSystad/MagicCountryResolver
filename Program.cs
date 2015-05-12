@@ -11,20 +11,17 @@ namespace MagicCountryResolver
                     
         static void Main(string[] args)
         {
-            if(args.Length < 2 ) { 
-                Console.WriteLine("Give me a mode ('none' or 'all') and a word to compare against!");
-                Environment.Exit(0);
-            }
-
-            Func<string, string, bool> validatorFunction;
+            if (args.Length < 2 )
+                Quit();
+            
+            Func<string, string, bool> validatorFunction = null;
 
             if (args[0].ToLower() == "none")
                 validatorFunction = (word, wordToCompareTo) => !word.HasAnyLetters(wordToCompareTo);
-
             else if (args[0].ToLower() == "all")
                 validatorFunction = (word, wordToCompareTo) => word.HasAllLetters(wordToCompareTo);
             else
-                throw new Exception("No mode given, give me one!");
+                Quit();
 
             _countries = File.ReadAllLines("../countries.txt");
 
@@ -32,15 +29,21 @@ namespace MagicCountryResolver
 
             foreach (var country in foundCountries)
                 Console.WriteLine(country);
-
+            
             Console.WriteLine();
             Console.WriteLine("A total of {0} countries.", foundCountries.Count());
         }
 
-        private static IEnumerable<string> GetCountries(string input, Func<string, string, bool> func)
+        private static void Quit()
+        {
+            Console.WriteLine("Give me a mode ('none' or 'all') and a word to compare against!");
+            Environment.Exit(0);
+        }
+
+        private static IEnumerable<string> GetCountries(string input, Func<string, string, bool> validatorFunction)
         {
             input = input.ToLower();
-            return _countries.Where(country => func(country.ToLower(), input));
+            return _countries.Where(country => validatorFunction(country.ToLower(), input));
         }
     }
 }
