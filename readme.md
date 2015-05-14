@@ -8,7 +8,7 @@ As hard as that was to figure out in the moment, I solved this for any word with
 
 After building it, you'll find ``mcr.exe`` in ``bin/``.
 
-``mcr all MyWord`` will give you all countries that contain all the letters in "MyWord".
+``mcr all MyWord`` will give you all countries that contain all the unique letters in "MyWord".
 
 ``mcr none MyWord``  will give you all countries not containing any of the letters in "MyWord".
 
